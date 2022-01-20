@@ -26,7 +26,6 @@ class Server
     config()
     {
         const mongouri = 'mongodb://localhost:27017/database';
-
         mongoose.connect(process.env.MONGODB_URL || mongouri, {} as ConnectOptions)
         .then(db => console.log('MongoDatabase is Connected to ', db.connection.host))
         .catch(err => console.error(err));
@@ -70,7 +69,11 @@ class Server
     routes()
     {
         this.app.use(indexRoutes);
-        this.app.use('/api/property', propertyRoutes);
+        this.app.use('/api/stay', propertyRoutes);
+        this.app.use('/api/booken', propertyRoutes);
+        this.app.use('/api/badge', propertyRoutes);
+        this.app.use('/api/airdrop', propertyRoutes);   
+        this.app.use('/api/landing', propertyRoutes);   
     }
 
     start()

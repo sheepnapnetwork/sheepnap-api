@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import Property from '../models/Property';
+import Stay from '../models/Stay';
 import Booken from '../models/Booken';
 
 class PropertyRoute
@@ -34,7 +34,7 @@ class PropertyRoute
         res.json(posts);
     }
 
-    async addProperty(req : Request, res : Response)
+    async addStay(req : Request, res : Response)
     {
         const { name, description } = req.body;
         const newProperty =  new Property({ name, description });
