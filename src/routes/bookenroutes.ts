@@ -1,5 +1,4 @@
 import { Request, Response, Router } from 'express';
-import Property from '../models/Stay';
 
 class BookenRoute
 {

@@ -1,6 +1,8 @@
 import { Request, Response, Router } from 'express';
-import Stay from '../models/Stay';
-import Booken from '../models/Booken';
+import "reflect-metadata";
+import { getConnection } from 'typeorm';
+import { Property } from "../entity/Property";
+
 
 class PropertyRoute
 {
@@ -15,31 +17,18 @@ class PropertyRoute
     async SearchProperties(req : Request, res : Response)
     {
         const { checkin, checkout, destination, adults } = req.body;
-        const posts = await Property.find();
-
-        //filter by date
-        var bookens = Booken.find({
-            datefrom: 
-            {
-                $gte: new Date(2012, 7, 14), 
-                $lt: new Date(2012, 7, 15)
-            },
-            adults : 
-            {
-                $lt : adults 
-            },
-        });
-        
-
-        res.json(posts);
+        res.json([]);
     }
 
-    async addStay(req : Request, res : Response)
+    async addProperty(req : Request, res : Response)
     {
-        const { name, description } = req.body;
-        const newProperty =  new Property({ name, description });
-        await newProperty.save();
-        res.json({status : res.status, data : newProperty});
+        const { name } = req.body;
+
+        let property = new Property();
+        property.name = name;
+        getConnection().manager.save(property);
+        console.log("Property has been saved");
+        res.json({status : res.status, data : ""});
     }
 
     routes()

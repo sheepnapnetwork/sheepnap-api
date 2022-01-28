@@ -8,7 +8,6 @@ const bookenSchema = new Schema(
     dateTo : { type : Date },
     minAdults : { type : Number },
     maxAdults : { type : Number },
-    
 });
 
 export default model('Booken', bookenSchema);

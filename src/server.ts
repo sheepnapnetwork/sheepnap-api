@@ -5,13 +5,16 @@ import helmet from 'helmet';
 import indexRoutes from './routes/indexroutes';
 import propertyRoutes from './routes/propertyroutes';
 
-import mongoose, { ConnectOptions, Schema, model } from 'mongoose';
 import compression from 'compression';
 import cors from 'cors'; 
 
 //TODO : Read dinamycally
 import locationsFileData from './locations.json';
 import Location from './models/Location';
+
+import "reflect-metadata";
+import { createConnection } from 'typeorm';
+import { Property } from "./entity/Property";
 
 class Server
 {
@@ -25,10 +28,23 @@ class Server
 
     config()
     {
-        const mongouri = 'mongodb://localhost:27017/database';
-        mongoose.connect(process.env.MONGODB_URL || mongouri, {} as ConnectOptions)
-        .then(db => console.log('MongoDatabase is Connected to ', db.connection.host))
-        .catch(err => console.error(err));
+
+        createConnection({
+            type: "postgres",
+            host: "localhost",
+            port: 5432,
+            username: "postgres",
+            password: "postgres",
+            database: "sheepnapdb",
+            entities: [
+                Property
+            ],
+            synchronize: true,
+            logging: false
+        }).then(connection => 
+        {
+            console.log("Connection to database is being stablished " + connection.name);   
+        }).catch(error => console.log(error));
 
         this.initializedata();
 
@@ -44,26 +60,7 @@ class Server
 
     async initializedata()
     {
-        const locations = await Location.findOne();
-
-        if(!locations)
-        {
-            //load from file
-            console.log("Initialing locations data");
-            locationsFileData.map((location: any) => 
-            {
-                console.log(location);
-                const newLocation = new Location(
-                { 
-                    name : location['name']
-                    ,geo : location['geo'] 
-                });
-
-                newLocation.save();
-            });
-
-            console.log("Done.");
-        }
+        //TODO : Locations by default
     }
 
     routes()

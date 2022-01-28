@@ -2,8 +2,12 @@
 version: '3.1'
 
 services:
-  mongo:
-    container_name : mongodatabase
-    image : mongo
-    ports : 
-      - "27017:27017"
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER : postgres
+      POSTGRES_PASSWORD : postgres
+      POSTGRES_DB : sheepnapdb
+    ports:
+      - 5432:5432
