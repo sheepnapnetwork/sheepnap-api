@@ -4,17 +4,18 @@ import helmet from 'helmet';
 
 import indexRoutes from './routes/indexroutes';
 import propertyRoutes from './routes/propertyroutes';
+import bookenRoutes from './routes/bookenroutes';
 
 import compression from 'compression';
 import cors from 'cors'; 
 
 //TODO : Read dinamycally
 import locationsFileData from './locations.json';
-import Location from './models/Location';
 
 import "reflect-metadata";
 import { createConnection } from 'typeorm';
 import { Property } from "./entity/Property";
+import { Booken } from './entity/Booken';
 
 class Server
 {
@@ -37,7 +38,8 @@ class Server
             password: "postgres",
             database: "sheepnapdb",
             entities: [
-                Property
+                Property,
+                Booken
             ],
             synchronize: true,
             logging: false
@@ -66,11 +68,8 @@ class Server
     routes()
     {
         this.app.use(indexRoutes);
-        this.app.use('/api/stay', propertyRoutes);
-        this.app.use('/api/booken', propertyRoutes);
-        this.app.use('/api/badge', propertyRoutes);
-        this.app.use('/api/airdrop', propertyRoutes);   
-        this.app.use('/api/landing', propertyRoutes);   
+        this.app.use('/api/property', propertyRoutes);
+        this.app.use('/api/booken', bookenRoutes); 
     }
 
     start()

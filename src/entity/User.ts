@@ -8,5 +8,5 @@ export class User {
 
     @Column()
     address : string;
-
+    
 }
