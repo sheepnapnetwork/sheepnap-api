@@ -32,13 +32,6 @@ class Server
     {
         dotenv.config();
 
-        var sslActive : boolean = false;
-
-        if(process.env.NODE_ENV == "production")
-        {
-            sslActive = true;
-        }
-
         createConnection({
             type: "postgres",
             host: process.env.DB_HOST,
@@ -53,7 +46,9 @@ class Server
             synchronize: true,
             logging: false,
             extra: {
-                rejectUnauthorized: false
+                ssl : {
+                    rejectUnauthorized: true
+                },
            }
         }).then(connection => 
         {
