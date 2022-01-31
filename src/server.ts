@@ -54,7 +54,8 @@ class Server
             synchronize: true,
             logging: false,
             extra: {
-                ssl: sslActive
+                ssl: sslActive,
+                rejectUnauthorized: false
            }
         }).then(connection => 
         {
