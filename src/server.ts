@@ -31,6 +31,15 @@ class Server
     config()
     {
         dotenv.config();
+
+        var sslActive : boolean = false;
+
+        if(process.env.NODE_ENV == "production")
+        {
+            sslActive = true;
+        }
+
+
         createConnection({
             type: "postgres",
             host: process.env.DB_HOST,
@@ -43,7 +52,10 @@ class Server
                 Booken
             ],
             synchronize: true,
-            logging: false
+            logging: false,
+            extra: {
+                ssl: sslActive
+           }
         }).then(connection => 
         {
             console.log("Connection to database is being stablished " + connection.name);   
