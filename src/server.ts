@@ -12,7 +12,6 @@ import cors from 'cors';
 import * as dotenv from 'dotenv';
 
 //TODO : Read dinamycally
-import locationsFileData from './locations.json';
 
 import "reflect-metadata";
 import { createConnection } from 'typeorm';

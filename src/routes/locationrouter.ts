@@ -1,5 +1,4 @@
 import { Request, Response, Router } from 'express';
-import Location from '../models/Location';
 
 class LocationRoute
 {
@@ -13,16 +12,12 @@ class LocationRoute
 
     async getLocations(req : Request, res : Response)
     {
-        const locations = await Location.find();
-        res.json(locations);
+        res.json([]);
     }
 
     async addLocation(req : Request, res : Response)
     {
-        const { name, description } = req.body;
-        const newProperty =  new Location({ name, description });
-        await newProperty.save();
-        res.json({status : res.status, data : newProperty});
+        res.json({status : res.status, data : ""});
     }
 
     routes()
