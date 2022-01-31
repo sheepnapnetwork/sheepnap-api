@@ -9,6 +9,8 @@ import bookenRoutes from './routes/bookenroutes';
 import compression from 'compression';
 import cors from 'cors'; 
 
+import * as dotenv from 'dotenv';
+
 //TODO : Read dinamycally
 import locationsFileData from './locations.json';
 
@@ -29,14 +31,14 @@ class Server
 
     config()
     {
-
+        dotenv.config();
         createConnection({
             type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "postgres",
-            database: "sheepnapdb",
+            host: process.env.DB_HOST,
+            port: Number(process.env.DB_PORT),
+            username: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_DATABASE,
             entities: [
                 Property,
                 Booken
