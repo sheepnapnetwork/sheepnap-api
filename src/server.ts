@@ -39,7 +39,6 @@ class Server
             sslActive = true;
         }
 
-
         createConnection({
             type: "postgres",
             host: process.env.DB_HOST,
@@ -54,7 +53,6 @@ class Server
             synchronize: true,
             logging: false,
             extra: {
-                ssl: sslActive,
                 rejectUnauthorized: false
            }
         }).then(connection => 
