@@ -47,7 +47,7 @@ class Server
             logging: false,
             extra: {
                 ssl : {
-                    rejectUnauthorized: true
+                    rejectUnauthorized: false
                 },
            }
         }).then(connection => 
