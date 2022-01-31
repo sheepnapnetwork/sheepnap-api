@@ -1,3 +1,18 @@
 {
-    "km_distance" : 10
+    "development" : 
+    {
+        "database_host" : "localhost",
+        "database_user" : "postgres",
+        "database_password" : "postgres",
+        "database_port" : "5432",
+        "database_dbname" : "sheepnapdb"
+    },
+    "production":
+    {
+        "database_host" : "ec2-54-157-15-228.compute-1.amazonaws.com",
+        "database_user" : "flypilucpudckj",
+        "database_password" : "c92ec58e182b16a8c65dc03bf01e82863d9f679137038df0ac8cbad888428c97",
+        "database_port" : "5432",
+        "database_dbname" : "ddkqvt9j25aclf"
+    }
 }

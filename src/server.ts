@@ -17,6 +17,8 @@ import { createConnection } from 'typeorm';
 import { Property } from "./entity/Property";
 import { Booken } from './entity/Booken';
 
+import configFile from '../config.json';
+
 class Server
 {
     public app:express.Application;
@@ -29,14 +31,15 @@ class Server
 
     config()
     {
-
+        var config = configFile[process.env.NODE_ENV || 'development']
+        console.log(config.database_host);
         createConnection({
             type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "postgres",
-            database: "sheepnapdb",
+            host: config.database_host,
+            port: config.database_port,
+            username: config.database_user,
+            password: config.database_password,
+            database: config.database_dbname,
             entities: [
                 Property,
                 Booken
