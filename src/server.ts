@@ -5,6 +5,9 @@ import helmet from 'helmet';
 import indexRoutes from './routes/indexroutes';
 import propertyRoutes from './routes/propertyroutes';
 import bookenRoutes from './routes/bookenroutes';
+import waitlistRoutes from './routes/waitlistrouter';
+
+import approvalRequestRoutes from './routes/approvalrequestrouter';
 
 import compression from 'compression';
 import cors from 'cors'; 
@@ -17,6 +20,8 @@ import "reflect-metadata";
 import { createConnection } from 'typeorm';
 import { Property } from "./entity/Property";
 import { Booken } from './entity/Booken';
+import { Waitlist } from "./entity/Waitlist";
+import { ApprovalRequest } from "./entity/ApprovalRequest";
 
 class Server
 {
@@ -41,15 +46,17 @@ class Server
             database: process.env.DB_DATABASE,
             entities: [
                 Property,
-                Booken
+                Booken,
+                Waitlist,
+                ApprovalRequest
             ],
             synchronize: true,
-            logging: false,
-            extra: {
+            logging: false
+            /* extra: {
                 ssl : {
                     rejectUnauthorized: false
-                },
-           }
+                }, */
+           //}
         }).then(connection => 
         {
             console.log("Connection to database is being stablished " + connection.name);   
@@ -76,7 +83,9 @@ class Server
     {
         this.app.use(indexRoutes);
         this.app.use('/api/property', propertyRoutes);
-        this.app.use('/api/booken', bookenRoutes); 
+        this.app.use('/api/booken', bookenRoutes);
+        this.app.use('/api/waitlist', waitlistRoutes);
+        this.app.use('/api/approvalrequest', approvalRequestRoutes);
     }
 
     start()

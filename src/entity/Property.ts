@@ -5,6 +5,9 @@ export class Property
 {
     @PrimaryColumn()
     address: string;
+
+    @Column({ length:500 })
+    owner : string;
     
     @Column({ length:200 })
     name : string;

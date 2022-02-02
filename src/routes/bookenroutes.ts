@@ -15,7 +15,14 @@ class BookenRoute
 
     async addBooken(req : Request, res : Response)
     {
-        const { address, dateFrom, dateTo, minAdults, maxAdults, propertyaddress } = req.body;
+        const { 
+            address, 
+            dateFrom, 
+            dateTo, 
+            minAdults, 
+            maxAdults, 
+            propertyaddress 
+        } = req.body;
 
         let booken = new Booken();
         booken.address = address;
@@ -27,7 +34,7 @@ class BookenRoute
         booken.property = propertyaddress;
         
         await getConnection().manager.save(booken);
-        console.info("Booken has been saved");``
+        console.info("Booken has been saved");
 
         res.json({ status : 'success' , data : "" });
     }

@@ -1,12 +1,18 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
 @Entity()
-export class User {
+export class Waitlist {
 
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    address : string;    
+    isPropertyOwner : boolean;
+
+    @Column()
+    marketingEmails : boolean;
+
+    @Column()
+    email : string;
     
 }
