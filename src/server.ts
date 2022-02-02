@@ -51,12 +51,12 @@ class Server
                 ApprovalRequest
             ],
             synchronize: true,
-            logging: false
-            /* extra: {
+            logging: false,
+            extra: {
                 ssl : {
                     rejectUnauthorized: false
-                }, */
-           //}
+                }
+           }
         }).then(connection => 
         {
             console.log("Connection to database is being stablished " + connection.name);   
