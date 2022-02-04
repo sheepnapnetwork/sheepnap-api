@@ -22,12 +22,13 @@ class PropertyRoute
 
     async addProperty(req : Request, res : Response)
     {
-        const { address, name, description } = req.body;
+        const { address, name, description, owner } = req.body;
 
         let property = new Property();
         property.address = address;
         property.name = name;
         property.description = description;
+        property.owner = owner;
         
         await getConnection().manager.save(property);
         console.info("Property has been saved");

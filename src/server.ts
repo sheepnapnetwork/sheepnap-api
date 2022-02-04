@@ -48,7 +48,7 @@ class Server
                 Property,
                 Booken,
                 Waitlist,
-                ApprovalRequest
+                ApprovalRequest 
             ],
             synchronize: true,
             logging: false,
