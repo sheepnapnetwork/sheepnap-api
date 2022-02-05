@@ -22,14 +22,30 @@ class ApprovalRequestRouter
         let approvalRequest = new ApprovalRequest();
         approvalRequest.property = propertyaddress;
         approvalRequest.description = description;
+        approvalRequest.active = true;
+        approvalRequest.startdate = new Date();
+        approvalRequest.enddate = new Date();
+        approvalRequest.totalvoters = 0;
+        
+
         console.log(propertyaddress); 
         await getConnection().manager.save(approvalRequest);
-        console.info("Approval request has been saved");
+        res.json({ 'status' : 'success' });
+    }
+
+    async getApprovalRequests(req : Request, res : Response)
+    {
+        let approvalRequest = await getConnection()
+            .getRepository(ApprovalRequest)
+            .find();
+
+        res.json(approvalRequest);
     }
 
     routes()
     {
         this.router.post('/addapprovalrequest', this.addApprovalRequest);
+        this.router.get('/approvalrequests', this.getApprovalRequests);
     }
 }
 

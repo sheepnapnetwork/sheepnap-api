@@ -16,8 +16,14 @@ class PropertyRoute
 
     async SearchProperties(req : Request, res : Response)
     {
-        const { checkin, checkout, destination, adults } = req.body;
-        res.json([]);
+        const { checkin, checkout, destination, adults, childs } = req.body;
+
+        const { owner } = req.body;
+        let propertiesByAddress : Property[] = await getConnection()
+            .getRepository(Property)
+            .find({ owner : owner });
+
+        res.json(propertiesByAddress);
     }
 
     async addProperty(req : Request, res : Response)
@@ -33,7 +39,7 @@ class PropertyRoute
         await getConnection().manager.save(property);
         console.info("Property has been saved");
 
-        res.json({ status : 'success' , data : "" });
+        res.json({ status : 'success' });
     }
 
     async getProperties(req: Request, res : Response)
@@ -43,6 +49,16 @@ class PropertyRoute
             .find();
 
         res.json(properties);
+    }
+
+    async getPropertiesByAddress(req : Request, res : Response)
+    {
+        const { owner } = req.body;
+        let propertiesByAddress : Property[] = await getConnection()
+            .getRepository(Property)
+            .find({ owner : owner });
+        
+        return propertiesByAddress;
     }
 
     async getPropertyDetail(req : Request, res : Response)
@@ -62,7 +78,8 @@ class PropertyRoute
         this.router.post('/property', this.getPropertyDetail);
         this.router.get('/properties', this.getProperties);
         this.router.post('/addproperty', this.addProperty);
-        this.router.post('/search', this.SearchProperties);  
+        this.router.post('/search', this.SearchProperties); 
+        this.router.get('/propertybyaddress', this.getPropertiesByAddress); 
     }
 }
 
