@@ -47,14 +47,13 @@ class Server {
             ],
             synchronize: true,
             logging: false,
-            extra: {
-                ssl: {
-                    rejectUnauthorized: false
-                }
-            }
+            extra: process.env.NODE_ENV == "production" ? { ssl: { rejectUnauthorized: false } } : {}
         }).then(connection => {
             console.log("Connection to database is being stablished " + connection.name);
-        }).catch(error => console.log(error));
+        }).catch(error => 
+        {
+                        
+        });
 
         this.initializedata();
 

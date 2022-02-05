@@ -53,12 +53,13 @@ class PropertyRoute
 
     async getPropertiesByAddress(req : Request, res : Response)
     {
-        const { owner } = req.body;
+        let owner : string = req.params['owner'];
+        console.log(owner);
         let propertiesByAddress : Property[] = await getConnection()
             .getRepository(Property)
             .find({ owner : owner });
         
-        return propertiesByAddress;
+        res.json(propertiesByAddress);
     }
 
     async getPropertyDetail(req : Request, res : Response)
@@ -79,7 +80,7 @@ class PropertyRoute
         this.router.get('/properties', this.getProperties);
         this.router.post('/addproperty', this.addProperty);
         this.router.post('/search', this.SearchProperties); 
-        this.router.get('/propertybyaddress', this.getPropertiesByAddress); 
+        this.router.get('/propertybyaddress/:owner', this.getPropertiesByAddress); 
     }
 }
 
