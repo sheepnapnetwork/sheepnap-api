@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
 
 @Entity()
 export class ApprovalRequest
@@ -12,17 +11,4 @@ export class ApprovalRequest
 
     @Column()
     property : string
-
-    @Column()
-    startdate : Date
-
-    @Column()
-    enddate : Date
-
-    @Column()
-    active : boolean
-
-    @Column()
-    totalvoters : Number
-    
 }
