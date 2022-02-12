@@ -12,14 +12,12 @@ import approvalRequestRoutes from './routes/approvalrequestrouter';
 
 import compression from 'compression';
 import cors from 'cors'; 
-
 import * as dotenv from 'dotenv';
-
-//TODO : Read dinamycally
-
 import "reflect-metadata";
+
 import { createConnection } from 'typeorm';
 import { Property } from "./entity/Property";
+import { PropertyImage } from './entity/PropertyImage';
 import { Booken } from './entity/Booken';
 import { Waitlist } from "./entity/Waitlist";
 import { ApprovalRequest } from "./entity/ApprovalRequest";
@@ -51,19 +49,22 @@ class Server
                 Booken,
                 Waitlist,
                 ApprovalRequest,
-                Badge
+                Badge,
+                PropertyImage
             ],
             synchronize: true,
             logging: false,
-            extra: {
-                // ssl : {
-                //     rejectUnauthorized: false
-                // }
-           }
-        }).then(connection => 
+            extra:  process.env.DB_DATABASE == "production" ? { 
+                 ssl : {
+                     rejectUnauthorized: false
+                }
+           } : {}
+        })
+        .then(connection => 
         {
-            console.log("Connection to database is being stablished " + connection.name);   
-        }).catch(error => console.log(error));
+            console.log("Connection to database is being stablished " + connection.name);
+        })
+        .catch(error => console.log(error));
 
         this.initializedata();
 

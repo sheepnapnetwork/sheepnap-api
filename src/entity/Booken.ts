@@ -1,5 +1,4 @@
 import { Entity, PrimaryColumn, Column, JoinColumn, OneToOne } from "typeorm";
-import { Property } from "./Property";
 
 @Entity()
 export class Booken

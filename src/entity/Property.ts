@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
+import { PropertyImage } from "./PropertyImage";
 
 @Entity()
 export class Property
@@ -14,4 +15,19 @@ export class Property
 
     @Column({ length:500 })
     description : string;
+
+    @Column()
+    active : boolean
+
+    @Column()
+    approved : boolean
+
+    @Column()
+    reviews : Number
+
+    @Column()
+    MetadataReference : string
+
+    @OneToMany(() => PropertyImage, propertyImage => propertyImage.property)
+    Images : PropertyImage[]
 }
