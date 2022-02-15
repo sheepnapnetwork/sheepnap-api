@@ -54,7 +54,7 @@ class Server
             ],
             synchronize: true,
             logging: false,
-            extra:  process.env.DB_DATABASE == "production" ? { 
+            extra:  process.env.NODE_ENV == "production" ? { 
                  ssl : {
                      rejectUnauthorized: false
                 }
