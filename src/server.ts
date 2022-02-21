@@ -8,6 +8,7 @@ import bookenRoutes from './routes/bookenroutes';
 import waitlistRoutes from './routes/waitlistrouter';
 import badgeRoutes from './routes/badgeroutes';
 
+
 import approvalRequestRoutes from './routes/approvalrequestrouter';
 
 import compression from 'compression';
@@ -18,10 +19,12 @@ import "reflect-metadata";
 import { createConnection } from 'typeorm';
 import { Property } from "./entity/Property";
 import { PropertyImage } from './entity/PropertyImage';
+import {RoomType} from './entity/RoomType';
 import { Booken } from './entity/Booken';
 import { Waitlist } from "./entity/Waitlist";
 import { ApprovalRequest } from "./entity/ApprovalRequest";
 import { Badge } from './entity/Badge';
+
 
 class Server
 {
@@ -50,7 +53,8 @@ class Server
                 Waitlist,
                 ApprovalRequest,
                 Badge,
-                PropertyImage
+                PropertyImage,
+                RoomType
             ],
             synchronize: true,
             logging: false,

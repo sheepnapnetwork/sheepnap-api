@@ -48,16 +48,6 @@ class PropertyRoute {
 
         await getConnection().transaction(async transactionalEntityManager => {
 
-            let images: PropertyImage[] = propertyMetadata.images.map((image) => {
-                let propertyImage: PropertyImage = new PropertyImage();
-                propertyImage.priority = image.priority;
-                propertyImage.property = address;
-                propertyImage.url = image.url;
-                propertyImage.title = image.title;
-                transactionalEntityManager.save(propertyImage);
-                return propertyImage;
-            });
-
             let property = new Property();
             property.address = address;
             property.name = propertyMetadata.name;
@@ -67,8 +57,19 @@ class PropertyRoute {
             property.approved = false;
             property.reviews = 0;
             property.MetadataReference = metadataendpoint;
+
+            let images: PropertyImage[] = propertyMetadata.images.map((image) => 
+            {
+                let propertyImage: PropertyImage = new PropertyImage();
+                propertyImage.priority = image.priority;
+                propertyImage.property = property;
+                propertyImage.url = image.url;
+                propertyImage.title = image.title;
+                return propertyImage;
+            });
+
             property.Images = images;
-            transactionalEntityManager.save(property);
+            await transactionalEntityManager.save(property);
         });
 
         res.json({status: 'success'});

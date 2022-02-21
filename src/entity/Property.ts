@@ -1,5 +1,6 @@
 import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
 import { PropertyImage } from "./PropertyImage";
+import { RoomType } from "./RoomType";
 
 @Entity()
 export class Property
@@ -30,4 +31,7 @@ export class Property
 
     @OneToMany(() => PropertyImage, propertyImage => propertyImage.property)
     Images : PropertyImage[]
+
+    @OneToMany(() => RoomType, roomType => roomType.property)
+    RoomType : RoomType[]
 }
