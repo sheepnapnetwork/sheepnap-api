@@ -107,6 +107,14 @@ class PropertyRoute {
         res.json(properties);
     }
 
+    async GetPropertiesByOwner(req : Request, res : Response) {
+        let owner: string = req.params.owner;
+
+        let properties: Property[] = await getConnection().getRepository(Property).find({owner: owner});
+
+        res.json(properties);
+    }
+
     routes() {
         this.router.post('/validate', this.validateMetadataEndpoint);
         this.router.get('/properties', this.GetProperties);
