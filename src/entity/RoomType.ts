@@ -8,7 +8,7 @@ export class RoomType {
     id: number;
 
     @Column()
-    code : string;  
+    code : number;  
     
     @Column()
     description : string; 

@@ -24,6 +24,8 @@ import { Booken } from './entity/Booken';
 import { Waitlist } from "./entity/Waitlist";
 import { ApprovalRequest } from "./entity/ApprovalRequest";
 import { Badge } from './entity/Badge';
+import roomTyperoutes from './routes/roomTyperoutes';
+import locationroutes from './routes/locationrouter';
 
 
 class Server
@@ -95,6 +97,8 @@ class Server
         this.app.use('/api/waitlist', waitlistRoutes);
         this.app.use('/api/approvalrequest', approvalRequestRoutes);
         this.app.use('/api/badge', badgeRoutes);
+        this.app.use('/api/roomType', roomTyperoutes);
+        this.app.use('/api/location', locationroutes);
     }
 
     start()
