@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Property } from "./Property";
 
 @Entity()
 export class ApprovalRequest
@@ -10,8 +11,11 @@ export class ApprovalRequest
     description : string;
 
     @Column()
-    property : string
-
-    @Column()
     status : string
+
+    @OneToOne(() => Property)
+    @JoinColumn()
+    property: Property;
+
+    
 }

@@ -42,11 +42,27 @@ class BadgeRoute
         res.json(badges);
     }
 
+    async deleteBadge(req: Request, res : Response)
+    {
+        const codeTodelete: number = parseInt(req.params.code); 
+
+        await getConnection()
+            .getRepository(Badge)
+            .createQueryBuilder()
+            .delete()
+            .from(Badge)
+            .where("code = :code", { code: codeTodelete })
+            .execute();
+        
+            res.json({ status : 'success' , data : "" });
+    }
+
 
     routes()
     {
         this.router.get('/badge', this.getBadges);
         this.router.post('/addbadge', this.addBadge);
+        this.router.delete('/deletebadge/:code', this.deleteBadge);
 
     }
 }
