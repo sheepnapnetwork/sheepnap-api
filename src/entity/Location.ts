@@ -8,5 +8,5 @@ export class Location
     address : number;
 
     @Column()
-    location: Geometry
+    dataPoint: string;
 }

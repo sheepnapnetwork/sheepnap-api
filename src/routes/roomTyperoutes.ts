@@ -13,17 +13,17 @@ class RoomTypeRoute{
     }
 
     async addRoomType(req : Request, res : Response){
-        const {code, description, propertyAddress} = req.body;
+        const {code, description, property} = req.body;
 
         let roomType = new RoomType()
         roomType.code = code;
         roomType.description = description;
 
 
-        let property = new Property();
-        property.address = propertyAddress;
+        let properties = new Property();
+        properties.address = property;
 
-        roomType.property = property;
+        roomType.property = properties;
         
 
         await getConnection().manager.save(roomType);
@@ -42,9 +42,13 @@ class RoomTypeRoute{
         
     }
 
-    async getRoomTypeByCode(req : Request, res : Response){
-        let code: number = parseInt(req.params.code);
-        let roomType : RoomType = await getConnection().getRepository(RoomType).findOne({code:code})
+    async getRoomTypeByAddress(req : Request, res : Response){
+        let address: string= req.params.property
+
+        let roomType : RoomType []  = await getConnection()
+            .getRepository(RoomType)
+            .createQueryBuilder("roomType")
+            .where("roomType.propertyAddress = :propertyAddress", { propertyAddress: address }).execute();
 
         res.json(roomType);
       
@@ -53,7 +57,7 @@ class RoomTypeRoute{
     routes(){
         this.router.post('/addRoomType', this.addRoomType);
         this.router.get('/roomsTypes', this.getRoomsTypes);
-        this.router.get('/roomType/:code', this.getRoomTypeByCode);
+        this.router.get('/roomType/:property', this.getRoomTypeByAddress);
 
     }
 }

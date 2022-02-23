@@ -26,6 +26,9 @@ import { ApprovalRequest } from "./entity/ApprovalRequest";
 import { Badge } from './entity/Badge';
 import roomTyperoutes from './routes/roomTyperoutes';
 import locationroutes from './routes/locationrouter';
+import userroutes from './routes/userroutes';
+import { User } from './entity/User';
+import { Location } from './entity/Location';
 
 
 class Server
@@ -56,7 +59,9 @@ class Server
                 ApprovalRequest,
                 Badge,
                 PropertyImage,
-                RoomType
+                RoomType,
+                User,
+                Location
             ],
             synchronize: true,
             logging: false,
@@ -99,6 +104,7 @@ class Server
         this.app.use('/api/badge', badgeRoutes);
         this.app.use('/api/roomType', roomTyperoutes);
         this.app.use('/api/location', locationroutes);
+        this.app.use('/api/user', userroutes);
     }
 
     start()

@@ -120,8 +120,8 @@ class PropertyRoute {
         this.router.post('/validate', this.validateMetadataEndpoint);
         this.router.get('/properties', this.GetProperties);
         this.router.post('/property', this.GetPropertyDetail);
-        this.router.get('/properties/:address', this.GetPropertiesByAddress);
-        this.router.get('/properties/:owner', this.GetPropertiesByOwner);
+        this.router.get('/properties/address/:address', this.GetPropertiesByAddress);
+        this.router.get('/properties/owner/:owner', this.GetPropertiesByOwner);
         this.router.post('/addproperty', this.AddProperty);
         this.router.post('/search', this.SearchProperties);
     }
