@@ -57,19 +57,17 @@ class PropertyRoute {
             property.approved = false;
             property.reviews = 0;
             property.MetadataReference = metadataendpoint;
+            await transactionalEntityManager.save(property);
 
-            let images: PropertyImage[] = propertyMetadata.images.map((image) => 
+            propertyMetadata.images.forEach(async (image) => 
             {
                 let propertyImage: PropertyImage = new PropertyImage();
                 propertyImage.priority = image.priority;
                 propertyImage.property = property;
                 propertyImage.url = image.url;
                 propertyImage.title = image.title;
-                return propertyImage;
+                await transactionalEntityManager.save(propertyImage);
             });
-
-            property.Images = images;
-            await transactionalEntityManager.save(property);
         });
 
         res.json({status: 'success'});
