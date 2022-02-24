@@ -36,8 +36,7 @@ class ApprovalRequestRouter
     async getAprovalRequests(req : Request, res : Response){
         let aprovalRequest = await getConnection()
         .getRepository(ApprovalRequest)
-        .createQueryBuilder()
-        .getMany();
+        .find({relations:["property"]})
         
         res.json(aprovalRequest)
     }
@@ -46,19 +45,12 @@ class ApprovalRequestRouter
         const idToCahnge : number = parseInt(req.params.id);
         const statusToChange : string = req.body.status;
 
-        let aprovalRequest: ApprovalRequest = await getConnection()
-            .getRepository(ApprovalRequest)
+        await getConnection()
             .createQueryBuilder()
-            .where("id = :id",{id : idToCahnge}).execute();
-
-            let aprovalRq = new ApprovalRequest();
-            aprovalRq.id= aprovalRequest[0].ApprovalRequest_id;
-            aprovalRq.description= aprovalRequest[0].ApprovalRequest_description;
-            aprovalRq.property= aprovalRequest[0].ApprovalRequest_propertyAddress;
-            aprovalRq.status= statusToChange;
-
-        await getConnection().manager.save(aprovalRq);
-        console.info("Approval request has been saved");
+            .update(ApprovalRequest)
+            .set({ status: statusToChange })
+            .where("id = :id", { id: idToCahnge })
+            .execute();
 
         res.json({ status : 'success' , data : "" });
 

@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import "reflect-metadata";
-import {getConnection} from 'typeorm';
+import {getConnection, getRepository, SelectQueryBuilder} from 'typeorm';
 import {Property} from "../entity/Property";
 import {PropertyImage} from '../entity/PropertyImage';
 import {PropertyMetadata} from '../types/PropertyMetadataType';
@@ -74,15 +74,18 @@ class PropertyRoute {
 
     }
 
-    async GetProperties(req : Request, res : Response) {
+    async GetPropertiesForHomePage(req : Request, res : Response) {
         // let properties = await getConnection()
         // .getRepository(Property)
         // .find({ active : true });
 
         const properties = await getConnection()
-        .getRepository(Property)
-        .find({ relations : ["Images"]});
-    
+            .getRepository(Property)
+            .createQueryBuilder("property")
+            .select("property.name")     
+            .leftJoinAndSelect("property.Images", "propertyImage")
+            .getMany();
+     
         res.json(properties);
     }
 
@@ -116,7 +119,7 @@ class PropertyRoute {
 
     routes() {
         this.router.post('/validate', this.validateMetadataEndpoint);
-        this.router.get('/properties', this.GetProperties);
+        this.router.get('/propertieshomepage', this.GetPropertiesForHomePage);
         this.router.post('/property', this.GetPropertyDetail);
         this.router.get('/properties/address/:address', this.GetPropertiesByAddress);
         this.router.get('/properties/owner/:owner', this.GetPropertiesByOwner);
