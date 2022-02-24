@@ -3,7 +3,7 @@ import {PropertyMetadata} from '../types/PropertyMetadataType';
 
 interface IMetadataValidator
 {
-    validateMetadata(metadataendpoint : string): Promise<PropertyMetadata>; 
+    validateMetadata(metadataendpoint : string): Promise<PropertyMetadata>;
 }
 
 export default class MetadataValidator implements IMetadataValidator
