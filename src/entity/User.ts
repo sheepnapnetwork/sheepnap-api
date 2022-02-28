@@ -8,5 +8,9 @@ export class User {
 
     @Column()
     address : string;    
+
+
+    @Column()
+    firsttime : boolean;
     
 }

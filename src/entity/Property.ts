@@ -23,11 +23,20 @@ export class Property
     @Column()
     approved : boolean
 
-    @Column()
-    reviews : Number
+    @Column({ default : 0})
+    reviews : Number = 0
 
     @Column()
-    MetadataReference : string
+    metadatareference : string
+
+    @Column({default: 0})
+    trustlevel : Number = 0
+
+    @Column({default: 0})
+    badgescount : Number = 0
+
+    @Column({default: 0})
+    rating : Number = 0
 
     @OneToMany(() => PropertyImage, propertyImage => propertyImage.property)
     Images : PropertyImage[]

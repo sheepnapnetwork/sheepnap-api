@@ -56,7 +56,7 @@ class PropertyRoute {
             property.active = true;
             property.approved = false;
             property.reviews = 0;
-            property.MetadataReference = metadataendpoint;
+            property.metadatareference = metadataendpoint;
             await transactionalEntityManager.save(property);
 
             propertyMetadata.images.forEach(async (image) => 
@@ -75,17 +75,15 @@ class PropertyRoute {
     }
 
     async GetPropertiesForHomePage(req : Request, res : Response) {
-        // let properties = await getConnection()
-        // .getRepository(Property)
-        // .find({ active : true });
 
         const properties = await getConnection()
             .getRepository(Property)
             .createQueryBuilder("property")
-            .select("property.name")     
+            .select("property.name")
+            .select("property.address")     
             .leftJoinAndSelect("property.Images", "propertyImage")
             .getMany();
-     
+        
         res.json(properties);
     }
 
@@ -96,32 +94,37 @@ class PropertyRoute {
             res.json({'error_message': 'provide an address'});
         }
 
-        let property = await getConnection().getRepository(Property).findOne({address: address});
+        let property = await getConnection()
+            .getRepository(Property)
+            .findOne({relations: ["Images"], where : { address : address } });
 
         res.json(property);
     }
 
     async GetPropertiesByAddress(req : Request, res : Response) {
         let address: string = req.params.address;
+        
+        let property = await getConnection()
+            .getRepository(Property)
+            .findOne({relations: ["Images"], where : { address : address } });
 
-        let properties: Property[] = await getConnection().getRepository(Property).find({address: address});
-
-        res.json(properties);
+        res.json(property);
     }
 
     async GetPropertiesByOwner(req : Request, res : Response) {
         let owner: string = req.params.owner;
 
-        let properties: Property[] = await getConnection().getRepository(Property).find({owner: owner});
-
+        let properties: Property[] = await getConnection()
+            .getRepository(Property)
+            .find({owner: owner});
+            
         res.json(properties);
     }
 
     routes() {
         this.router.post('/validate', this.validateMetadataEndpoint);
         this.router.get('/propertieshomepage', this.GetPropertiesForHomePage);
-        this.router.post('/property', this.GetPropertyDetail);
-        this.router.get('/properties/address/:address', this.GetPropertiesByAddress);
+        this.router.get('/property/:address', this.GetPropertiesByAddress);
         this.router.get('/properties/owner/:owner', this.GetPropertiesByOwner);
         this.router.post('/addproperty', this.AddProperty);
         this.router.post('/search', this.SearchProperties);
