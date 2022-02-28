@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn } from "typeorm";
+import { Amenity } from "./Amenities";
 import { PropertyImage } from "./PropertyImage";
 import { RoomType } from "./RoomType";
 
@@ -13,6 +14,9 @@ export class Property
     
     @Column({ length:200 })
     name : string;
+
+    @CreateDateColumn()
+    createdDate : Date;
 
     @Column({ length:500 })
     description : string;
@@ -43,4 +47,7 @@ export class Property
 
     @OneToMany(() => RoomType, roomType => roomType.property)
     RoomType : RoomType[]
+
+    @OneToMany(() => Amenity, amenity =>amenity.property)
+    Amenities : Amenity[]
 }

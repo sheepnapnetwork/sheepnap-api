@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, JoinColumn, OneToOne } from "typeorm";
+import { Entity, PrimaryColumn, Column, JoinColumn, OneToOne, CreateDateColumn } from "typeorm";
 
 @Entity()
 export class Booken
@@ -11,6 +11,9 @@ export class Booken
 
     @Column({ type: 'timestamptz' })
     dateTo : Date;
+
+    @CreateDateColumn()
+    createdDate : Date;
 
     @Column()
     minAdults : Number;

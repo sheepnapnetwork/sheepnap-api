@@ -15,8 +15,10 @@ class UserRoute{
     async addUser(req : Request, res: Response){
         const {address} = req.body;
 
+        let date : Date = new Date()
         let user = new User();
         user.address = address;
+        user.createdDate = date;
 
         await getConnection().manager.save(user);
 

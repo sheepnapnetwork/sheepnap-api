@@ -24,12 +24,14 @@ class BookenRoute
             propertyaddress 
         } = req.body;
 
+        let date : Date = new Date();
         let booken = new Booken();
         booken.address = address;
         booken.dateFrom = dateFrom;
         booken.dateTo = dateTo;
         booken.minAdults = minAdults;
         booken.maxAdults = maxAdults;
+        booken.createdDate = date;
         console.log(propertyaddress);
         booken.property = propertyaddress;
         
@@ -51,6 +53,7 @@ class BookenRoute
     routes()
     {
         this.router.post('/addbooken', this.addBooken);
+        this.router.get('/bookens', this.getBooken);
     }
 }
 

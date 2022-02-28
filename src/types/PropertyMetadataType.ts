@@ -1,3 +1,5 @@
+
+
 export type PropertyMetadata = {
     name: string,
     description : string,
@@ -7,7 +9,8 @@ export type PropertyMetadata = {
     address : string,
     latitude : string,
     longitude : string,
-    images : Array<Image>
+    images : Array<Image>,
+    amenities : Array<Amenity>
 };
 
 type Image =
@@ -15,4 +18,10 @@ type Image =
     url : string,
     title : string,
     priority : Number
+}
+
+type Amenity =
+{
+    name : string,
+    code : number,
 }

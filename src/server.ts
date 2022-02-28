@@ -29,6 +29,7 @@ import locationroutes from './routes/locationrouter';
 import userroutes from './routes/userroutes';
 import { User } from './entity/User';
 import { Location } from './entity/Location';
+import {  Amenity } from './entity/Amenities';
 
 
 class Server
@@ -61,7 +62,9 @@ class Server
                 PropertyImage,
                 RoomType,
                 User,
-                Location
+                Location,
+                Amenity
+                
             ],
             synchronize: true,
             logging: false,
