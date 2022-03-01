@@ -2,17 +2,19 @@ import {Request, Response, Router} from 'express';
 import "reflect-metadata";
 import {getConnection, getRepository, SelectQueryBuilder} from 'typeorm';
 import {Property} from "../entity/Property";
-import {PropertyImage} from '../entity/PropertyImage';
 import {PropertyMetadata} from '../types/PropertyMetadataType';
 import MetadataValidator from '../businessentities/MetadataValidator';
-import { Amenity } from '../entity/Amenities';
+import PropertyRepository from '../businesslogic/propertyrepository';
 
 class PropertyRoute {
     router : Router;
+    //metaDataValidator : MetadataValidator;
 
     constructor() {
+        //this.metaDataValidator = new MetadataValidator();
         this.router = Router();
         this.routes();
+        
     }
 
     async SearchProperties(req : Request, res : Response) {
@@ -20,72 +22,21 @@ class PropertyRoute {
         res.json([]);
     }
 
-    async validateMetadataEndpoint(req : Request, res : Response) {
-        const {metadataendpoint} = req.body;
-
-        //TODO : class need to be a private prop because is used in several parts.
-        let metaDataValidator = new MetadataValidator();
-        let propertyMetadata : PropertyMetadata = await metaDataValidator.validateMetadata(metadataendpoint);
-
-        if (!propertyMetadata) {
-            res.json({error: true, message: "an error has ocurred"});
-        }
-
-        return res.json({error: false, message: ''});
-    }
-
     async AddProperty(req : Request, res : Response) {
         const {address, owner, metadataendpoint} = req.body;
 
         let metaDataValidator = new MetadataValidator();
-        let propertyMetadata: PropertyMetadata = await metaDataValidator.validateMetadata(metadataendpoint);
-
-        // Read metadata from external service
-        // validate JSON has the proper structure
-        if (!propertyMetadata) {
-            res.json({ error : true });
-            return;
-        }
-
-        await getConnection().transaction(async transactionalEntityManager => {
-
-            let date: Date = new Date();
-            let property = new Property();
-            property.address = address;
-            property.name = propertyMetadata.name;
-            property.description = propertyMetadata.description;
-            property.owner = owner;
-            property.createdDate = date;
-            property.active = true;
-            property.approved = false;
-            property.reviews = 0;
-            property.metadatareference = metadataendpoint;
-            
-            await transactionalEntityManager.save(property);
-
-            propertyMetadata.images.forEach(async (image) => 
-            {
-                let propertyImage: PropertyImage = new PropertyImage();
-                propertyImage.priority = image.priority;
-                propertyImage.property = property;
-                propertyImage.url = image.url;
-                propertyImage.title = image.title;
-                await transactionalEntityManager.save(propertyImage);
-            });
-
-            propertyMetadata.amenities.forEach(async (amenitie)=>{
-
-                let amenitieTosave : Amenity = new Amenity();
-                amenitieTosave.code = amenitie.code;
-                amenitieTosave.name = amenitie.name;
-                amenitieTosave.property = property;
-                await transactionalEntityManager.save(amenitieTosave);
-            })
-
+        metaDataValidator.validateMetadata(metadataendpoint)
+        .then(async (propertyMetadata : PropertyMetadata) => 
+        {
+            let propertyRepository = new PropertyRepository();
+            await propertyRepository.AddPropertyMetadata(propertyMetadata, address, owner, metadataendpoint);
+            res.json({status: 'success'});
+        })
+        .catch((error : Error) => 
+        {
+            res.json({status: error.message});
         });
-
-        res.json({status: 'success'});
-
     }
 
     async GetPropertiesForHomePage(req : Request, res : Response) {
@@ -93,9 +44,9 @@ class PropertyRoute {
         const properties = await getConnection()
             .getRepository(Property)
             .createQueryBuilder()
-            .select("property.name", "property.address")
-            .from(Property, "property")   
-            .leftJoinAndSelect("property.Images", "propertyImage")
+            .select(["p.name", "p.address"])
+            .from(Property, "p")
+            .leftJoinAndSelect("p.Images", "propertyImage")
             .getMany();
         
         res.json(properties);
@@ -133,6 +84,22 @@ class PropertyRoute {
             .find({owner: owner});
             
         res.json(properties);
+    }
+
+    async validateMetadataEndpoint(req : Request, res : Response) {
+        const {metadataendpoint} = req.body;
+        
+        let metaDataValidator = new MetadataValidator();
+
+        try
+        {
+            await metaDataValidator.validateMetadata(metadataendpoint);
+            return res.json({error: false, message: ''});
+        }
+        catch(error)
+        {  
+            return res.json({error: true, message: error.message});
+        }        
     }
 
     routes() {
