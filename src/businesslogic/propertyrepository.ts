@@ -47,4 +47,59 @@ export default class PropertyRepository
             });
         });
     }
+
+    async GetPropertiesForHomePageRepository() 
+    {
+        const properties = await getConnection()
+        .getRepository(Property)
+        .createQueryBuilder()
+        .select(["p.name", "p.address", "p.pricefrom"])
+        .from(Property, "p")
+        .leftJoinAndSelect("p.Images", "propertyImage")
+        .getMany();
+
+        return properties;
+    }
+
+    async GetPropertiesByApprovedDeniedRepository()
+    {
+        const properties = await getConnection()
+            .getRepository(Property)
+            .createQueryBuilder("property")
+            .select(["property.name", "property.approved"])
+            .where("property.approved = :approved", {approved:false})
+            .orWhere("property.AprovalRequest = :AprovalRequest", {AprovalRequest:null})
+            .leftJoinAndSelect("property.AprovalRequest", "propertyAprovalrequest")
+            .leftJoinAndSelect("property.Images", "propertyImage")
+            .getMany();
+
+        return properties;
+    }
+
+    async GetPropertyDetailRepository(address : string)
+    {
+        let property = await getConnection()
+            .getRepository(Property)
+            .findOne({relations: ["Images"], where : { address : address } });
+        
+        return property;
+    }
+
+    async GetPropertiesByAddressRepository(address : string)
+    {
+        let property = await getConnection()
+            .getRepository(Property)
+            .findOne({relations: ["Images", "Amenities"], where : { address : address } });
+        
+        return property;
+    }
+
+    async GetPropertiesByOwnerRepository(owner : string)
+    {
+        let properties: Property[] = await getConnection()
+            .getRepository(Property)
+            .find({owner: owner});
+        
+        return properties;
+    }
 }

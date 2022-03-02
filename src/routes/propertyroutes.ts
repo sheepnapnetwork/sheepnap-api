@@ -39,31 +39,20 @@ class PropertyRoute {
         });
     }
 
-    async GetPropertiesForHomePage(req : Request, res : Response) {
-
-        const properties = await getConnection()
-            .getRepository(Property)
-            .createQueryBuilder()
-            .select(["p.name", "p.address", "p.pricefrom"])
-            .from(Property, "p")
-            .leftJoinAndSelect("p.Images", "propertyImage")
-            .getMany();
+    async GetPropertiesForHomePage(req : Request, res : Response) 
+    {
+        let propertyRepository = new PropertyRepository();
+        let properties = await propertyRepository.GetPropertiesForHomePageRepository()
         
         res.json(properties);
     }
 
-    async GetPropertiesByApprovedDenied(req : Request, res : Response) {
-
-        const properties = await getConnection()
-            .getRepository(Property)
-            .createQueryBuilder("property")
-            .select(["property.name", "property.approved"])
-            .where("property.approved = :approved", {approved:false})
-            .leftJoinAndSelect("property.AprovalRequest", "propertyAprovalrequest")
-            .leftJoinAndSelect("property.Images", "propertyImage")
-            .getMany();
+    async GetPropertiesByApprovedDenied(req : Request, res : Response) 
+    {
+        let propertyRepository = new PropertyRepository();
+        let propertiesDenied = await propertyRepository.GetPropertiesByApprovedDeniedRepository()
         
-        res.json(properties);
+        res.json(propertiesDenied);
     }
 
     async GetPropertyDetail(req : Request, res : Response) {
@@ -73,31 +62,28 @@ class PropertyRoute {
             res.json({'error_message': 'provide an address'});
         }
 
-        let property = await getConnection()
-            .getRepository(Property)
-            .findOne({relations: ["Images"], where : { address : address } });
+        let propertyRepository = new PropertyRepository();
+        let propertyDetail = await propertyRepository.GetPropertyDetailRepository(address); 
 
-        res.json(property);
+        res.json(propertyDetail);
     }
 
     async GetPropertiesByAddress(req : Request, res : Response) {
         let address: string = req.params.address;
         
-        let property = await getConnection()
-            .getRepository(Property)
-            .findOne({relations: ["Images", "Amenities"], where : { address : address } });
+        let propertyRepository = new PropertyRepository();
+        let propertyAddress = await propertyRepository.GetPropertiesByAddressRepository(address);
 
-        res.json(property);
+        res.json(propertyAddress);
     }
 
     async GetPropertiesByOwner(req : Request, res : Response) {
         let owner: string = req.params.owner;
 
-        let properties: Property[] = await getConnection()
-            .getRepository(Property)
-            .find({owner: owner});
+        let propertyRepository = new PropertyRepository();
+        let propertyOwner = await propertyRepository.GetPropertiesByOwnerRepository(owner);
             
-        res.json(properties);
+        res.json(propertyOwner);
     }
 
     async validateMetadataEndpoint(req : Request, res : Response) {
@@ -118,6 +104,7 @@ class PropertyRoute {
 
     routes() {
         this.router.post('/validate', this.validateMetadataEndpoint);
+        this.router.get('/propertydetail', this.GetPropertyDetail);
         this.router.get('/propertieshomepage', this.GetPropertiesForHomePage);
         this.router.get('/propertiesapproveddenied', this.GetPropertiesByApprovedDenied);
         this.router.get('/property/:address', this.GetPropertiesByAddress);
