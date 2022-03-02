@@ -13,8 +13,7 @@ export class ApprovalRequest
     @Column()
     status : string
 
-    @OneToOne(() => Property)
-    @JoinColumn()
+    @OneToOne(() => Property, property => property.AprovalRequest)
     property: Property;
 
     

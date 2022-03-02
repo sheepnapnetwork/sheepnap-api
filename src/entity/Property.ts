@@ -55,7 +55,7 @@ export class Property
     @OneToMany(() => Amenity, amenity =>amenity.property)
     Amenities : Amenity[]
 
-    @OneToOne(() => ApprovalRequest)
+    @OneToOne(() => ApprovalRequest, aprovalRequest => aprovalRequest.property)
     @JoinColumn()
     AprovalRequest: ApprovalRequest;
 }
