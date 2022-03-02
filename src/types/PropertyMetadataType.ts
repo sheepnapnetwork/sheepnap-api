@@ -9,6 +9,7 @@ export type PropertyMetadata = {
     address : string,
     latitude : string,
     longitude : string,
+    category : PropertyCategory,
     images : Array<Image>,
     amenities : Array<Amenity>
 };
@@ -25,3 +26,5 @@ type Amenity =
     name : string,
     code : number,
 }
+
+export type PropertyCategory = "Cabin" | "Apartment";

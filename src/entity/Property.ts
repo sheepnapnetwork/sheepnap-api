@@ -42,6 +42,9 @@ export class Property
     @Column({default: 0})
     rating : Number = 0
 
+    @Column({default: 0})
+    pricefrom : Number = 0
+
     @OneToMany(() => PropertyImage, propertyImage => propertyImage.property)
     Images : PropertyImage[]
 
