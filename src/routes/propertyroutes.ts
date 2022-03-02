@@ -44,7 +44,7 @@ class PropertyRoute {
         const properties = await getConnection()
             .getRepository(Property)
             .createQueryBuilder()
-            .select(["p.name", "p.address"])
+            .select(["p.name", "p.address", "p.pricefrom"])
             .from(Property, "p")
             .leftJoinAndSelect("p.Images", "propertyImage")
             .getMany();

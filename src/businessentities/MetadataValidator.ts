@@ -1,9 +1,7 @@
 import axios, {AxiosResponse, AxiosResponseHeaders} from "axios";
 import {PropertyMetadata} from '../types/PropertyMetadataType';
+import { IMetadataValidator } from "./IMetadataValidator";
 
-interface IMetadataValidator {
-    validateMetadata(metadataendpoint : string): Promise < PropertyMetadata >;
-}
 
 export default class MetadataValidator implements IMetadataValidator {
     async validateMetadata(metadataendpoint : string): Promise <PropertyMetadata> {
