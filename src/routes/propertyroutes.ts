@@ -52,6 +52,20 @@ class PropertyRoute {
         res.json(properties);
     }
 
+    async GetPropertiesByApprovedDenied(req : Request, res : Response) {
+
+        const properties = await getConnection()
+            .getRepository(Property)
+            .createQueryBuilder("property")
+            .select(["property.name", "property.approved"])
+            .where("property.approved = :approved", {approved:false})
+            .leftJoinAndSelect("property.AprovalRequest", "propertyAprovalrequest")
+            .leftJoinAndSelect("property.Images", "propertyImage")
+            .getMany();
+        
+        res.json(properties);
+    }
+
     async GetPropertyDetail(req : Request, res : Response) {
         const {address} = req.body;
 
@@ -105,6 +119,7 @@ class PropertyRoute {
     routes() {
         this.router.post('/validate', this.validateMetadataEndpoint);
         this.router.get('/propertieshomepage', this.GetPropertiesForHomePage);
+        this.router.get('/propertiesapproveddenied', this.GetPropertiesByApprovedDenied);
         this.router.get('/property/:address', this.GetPropertiesByAddress);
         this.router.get('/properties/owner/:owner', this.GetPropertiesByOwner);
         this.router.post('/addproperty', this.AddProperty);
