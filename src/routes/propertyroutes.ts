@@ -49,7 +49,7 @@ class PropertyRoute {
 
     async GetPropertiesByApprovedDenied(req : Request, res : Response) 
     {
-        let owner: string = req.params.owner;
+        let owner: string = req.params.owner.toLowerCase();
 
         let propertyRepository = new PropertyRepository();
         let propertiesDenied = await propertyRepository.GetPropertiesByApprovedDeniedRepository(owner)
@@ -80,7 +80,7 @@ class PropertyRoute {
     }
 
     async GetPropertiesByOwner(req : Request, res : Response) {
-        let owner: string = req.params.owner;
+        let owner: string = req.params.owner.toLowerCase();
 
         let propertyRepository = new PropertyRepository();
         let propertyOwner = await propertyRepository.GetPropertiesByOwnerRepository(owner);
