@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { Geometry } from 'geojson';
 import { getConnection, getMongoRepository } from 'typeorm';
+import LocationRepository from '../businesslogic/locationRepository';
 import { Location } from '../entity/Location';
 
 class LocationRoute
@@ -13,26 +14,21 @@ class LocationRoute
         this.routes();
     }
 
-    async getLocations(req : Request, res : Response)
-    {
-        let location = await getConnection().getRepository(Location).find()
-        res.json(location);
-    }
-
     async addLocation(req : Request, res : Response)
     {
         const {address , dataPoint} = req.body;
-
-        let geography = new Location()
-        geography.address = address;
-        geography.dataPoint = dataPoint; 
-
-        //locations.location = location;
-
-        await getConnection().manager.save(geography);
-        console.info("Location has been saved");
-
+        let locationRepository = new LocationRepository();
+        await locationRepository.addLocatioRepository(address, dataPoint);
+        
         res.json({status : res.status, data : ""});
+    }
+
+    async getLocations(req : Request, res : Response)
+    {
+        let locationRepository = new LocationRepository();
+        let locations = await locationRepository.getLocationsRepository();
+        
+        res.json(locations);
     }
 
     routes()

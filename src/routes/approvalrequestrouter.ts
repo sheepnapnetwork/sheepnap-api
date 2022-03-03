@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { Result } from 'ts-postgres/dist/src/result';
 import { getConnection } from 'typeorm';
+import AprovalRequestRepository from '../businesslogic/aprovalRequestRepository';
 import { ApprovalRequest } from "../entity/ApprovalRequest";
 import { Property } from '../entity/Property';
 
@@ -18,39 +19,27 @@ class ApprovalRequestRouter
     {
         const {status, description, property} = req.body;
 
-        let approvalRequest = new ApprovalRequest();
-        approvalRequest.description = description;
-        approvalRequest.status = status;
-
-        let propertyToAdd = new Property();
-        propertyToAdd.address = property
-
-        approvalRequest.property = propertyToAdd;
-        //console.log(propertyaddress); 
-        await getConnection().manager.save(approvalRequest);
-        console.info("Approval request has been saved");
+        let aprovalRequestRepository = new AprovalRequestRepository();
+        await aprovalRequestRepository.addApprovalRequestRepository(status, description, property);
 
         res.json({ status : 'success' , data : "" });
     }
 
-    async getAprovalRequests(req : Request, res : Response){
-        let aprovalRequest = await getConnection()
-        .getRepository(ApprovalRequest)
-        .find({relations:["property"]})
-        
-        res.json(aprovalRequest)
+    async getAprovalRequests(req : Request, res : Response)
+    {
+        let aprovalRequestRepository = new AprovalRequestRepository();
+        let aprovalRequestToGet = await aprovalRequestRepository.getAprovalRequestsRepository();
+
+        res.json(aprovalRequestToGet);
     }
 
     async changeStatusAprovalRequest(req : Request, res : Response){
         const idToCahnge : number = parseInt(req.params.id);
         const statusToChange : string = req.body.status;
 
-        await getConnection()
-            .createQueryBuilder()
-            .update(ApprovalRequest)
-            .set({ status: statusToChange })
-            .where("id = :id", { id: idToCahnge })
-            .execute();
+        let aprovalRequestRepository = new AprovalRequestRepository();
+        await aprovalRequestRepository
+            .changeStatusAprovalRequestRepository(idToCahnge, statusToChange)
 
         res.json({ status : 'success' , data : "" });
 

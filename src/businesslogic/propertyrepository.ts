@@ -61,16 +61,17 @@ export default class PropertyRepository
         return properties;
     }
 
-    async GetPropertiesByApprovedDeniedRepository()
+    async GetPropertiesByApprovedDeniedRepository(ownerDenied: string)
     {
+
         const properties = await getConnection()
             .getRepository(Property)
             .createQueryBuilder("property")
-            .select(["property.name", "property.approved"])
-            .where("property.approved = :approved", {approved:false})
+            .select(["property.name", "property.approved", "property.address"])
+            .where("property.owner = :owner", {owner: ownerDenied})
+            .andWhere("property.approved = :approved", {approved: false})
             .orWhere("property.AprovalRequest = :AprovalRequest", {AprovalRequest:null})
             .leftJoinAndSelect("property.AprovalRequest", "propertyAprovalrequest")
-            .leftJoinAndSelect("property.Images", "propertyImage")
             .getMany();
 
         return properties;

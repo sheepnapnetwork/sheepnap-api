@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { getConnection } from 'typeorm';
+import BookenRepository from '../businesslogic/bookenRepository';
 import { Booken } from "../entity/Booken";
 import { Property } from '../entity/Property';
 
@@ -24,30 +25,19 @@ class BookenRoute
             propertyaddress 
         } = req.body;
 
-        let date : Date = new Date();
-        let booken = new Booken();
-        booken.address = address;
-        booken.dateFrom = dateFrom;
-        booken.dateTo = dateTo;
-        booken.minAdults = minAdults;
-        booken.maxAdults = maxAdults;
-        booken.createdDate = date;
-        console.log(propertyaddress);
-        booken.property = propertyaddress;
-        
-        await getConnection().manager.save(booken);
-        console.info("Booken has been saved");
+       let bookenRepository = new BookenRepository();
+       await bookenRepository.addBookenRepository(address, dateFrom, dateTo, 
+                        minAdults, maxAdults, propertyaddress);
 
         res.json({ status : 'success' , data : "" });
     }
 
     async getBooken(req : Request, res : Response)
     {
-        let bookens = await getConnection()
-        .getRepository(Booken)
-        .find();
+        let bookenRepository = new BookenRepository();
+        let bookensToGet =  await bookenRepository.getBookensRepository();
 
-        res.json(bookens);
+        res.json(bookensToGet);
     }
 
     routes()

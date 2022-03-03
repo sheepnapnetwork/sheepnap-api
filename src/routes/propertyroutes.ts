@@ -49,8 +49,10 @@ class PropertyRoute {
 
     async GetPropertiesByApprovedDenied(req : Request, res : Response) 
     {
+        let owner: string = req.params.owner;
+
         let propertyRepository = new PropertyRepository();
-        let propertiesDenied = await propertyRepository.GetPropertiesByApprovedDeniedRepository()
+        let propertiesDenied = await propertyRepository.GetPropertiesByApprovedDeniedRepository(owner)
         
         res.json(propertiesDenied);
     }
@@ -106,7 +108,7 @@ class PropertyRoute {
         this.router.post('/validate', this.validateMetadataEndpoint);
         this.router.get('/propertydetail', this.GetPropertyDetail);
         this.router.get('/propertieshomepage', this.GetPropertiesForHomePage);
-        this.router.get('/propertiesapproveddenied', this.GetPropertiesByApprovedDenied);
+        this.router.get('/propertiesapproveddenied/:owner', this.GetPropertiesByApprovedDenied);
         this.router.get('/property/:address', this.GetPropertiesByAddress);
         this.router.get('/properties/owner/:owner', this.GetPropertiesByOwner);
         this.router.post('/addproperty', this.AddProperty);

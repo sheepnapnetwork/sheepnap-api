@@ -1,5 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {getConnection} from 'typeorm';
+import UserRepository from '../businesslogic/userRepository';
 import { User } from '../entity/User';
 
 
@@ -13,33 +14,29 @@ class UserRoute{
     }
 
     async addUser(req : Request, res: Response){
-        const {address} = req.body;
+        const {address, firsttime} = req.body;
 
-        let date : Date = new Date()
-        let user = new User();
-        user.address = address;
-        user.createdDate = date;
-
-        await getConnection().manager.save(user);
-
-        console.info("User has been saved");
+        let userRepository = new UserRepository();
+        await userRepository.addUserRepository(address, firsttime);
 
         res.json({ status : 'success' , data : "" });
-
     }
 
-    async getUsers(req : Request, res: Response){
-        let user = await getConnection().getRepository(User).find();
+    async getUsers(req : Request, res: Response)
+    {
+        let userRepository = new UserRepository();
+        let userToGet = await userRepository.getUsersRepository();
 
-        res.json(user);
+        res.json(userToGet);
     }
 
     async getUserById(req : Request, res: Response){
         const id : number = parseInt(req.params.id);
-        let users : User = await getConnection().getRepository(User).findOne({where:{id:id}});
-
-        res.json(users);
         
+        let userRepository = new UserRepository();
+        let userById = await userRepository.getUserByIdRepository(id);
+
+        res.json(userById);
     }
 
 

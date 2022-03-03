@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import "reflect-metadata";
 import { getConnection } from 'typeorm';
+import BadgeRepository from '../businesslogic/badgeRepository';
 import {Badge} from '../entity/Badge';
 
 
@@ -14,56 +15,39 @@ class BadgeRoute
         this.routes();
     }
 
-
     async addBadge(req : Request, res : Response)
     {
         const { code, name,description, owner, quantity, src } = req.body;
 
-        let badge = new Badge();
-        badge.code = code;
-        badge.name = name;
-        badge.description = description;
-        badge.owner = owner;
-        badge.quantity = quantity;
-        badge.src = src;
-        
-        await getConnection().manager.save(badge);
-        console.info("Badge has been saved");
+        let badgeRepository = new BadgeRepository();
+        await badgeRepository.addBadgeRepository(code, name, description, owner, quantity, src);
 
         res.json({ status : 'success' , data : "" });
     }
 
     async getBadges(req: Request, res : Response)
     {
-        let badges = await getConnection()
-            .getRepository(Badge)
-            .find();
+        let badgeRepository = new BadgeRepository();
+        let badgesToGet = await badgeRepository.getBadgesRepository();
 
-        res.json(badges);
+        res.json(badgesToGet);
     }
 
     async deleteBadge(req: Request, res : Response)
     {
         const codeTodelete: number = parseInt(req.params.code); 
 
-        await getConnection()
-            .getRepository(Badge)
-            .createQueryBuilder()
-            .delete()
-            .from(Badge)
-            .where("code = :code", { code: codeTodelete })
-            .execute();
+        let badgeRepository = new BadgeRepository();
+        await badgeRepository.deleteBadgeRepository(codeTodelete);
         
-            res.json({ status : 'success' , data : "" });
+        res.json({ status : 'success' , data : "" });
     }
-
 
     routes()
     {
         this.router.get('/badge', this.getBadges);
         this.router.post('/addbadge', this.addBadge);
         this.router.delete('/deletebadge/:code', this.deleteBadge);
-
     }
 }
 
