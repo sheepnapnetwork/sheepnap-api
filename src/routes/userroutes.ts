@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {getConnection} from 'typeorm';
-import UserRepository from '../businesslogic/userRepository';
+import UserRepository from '../businesslogic/user';
 import { User } from '../entity/User';
 
 

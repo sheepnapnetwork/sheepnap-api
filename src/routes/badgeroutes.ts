@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import "reflect-metadata";
 import { getConnection } from 'typeorm';
-import BadgeRepository from '../businesslogic/badgeRepository';
+import BadgeRepository from '../businesslogic/badge';
 import {Badge} from '../entity/Badge';
 
 

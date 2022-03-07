@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { Geometry } from 'geojson';
 import { getConnection, getMongoRepository } from 'typeorm';
-import LocationRepository from '../businesslogic/locationRepository';
+import LocationRepository from '../businesslogic/location';
 import { Location } from '../entity/Location';
 
 class LocationRoute

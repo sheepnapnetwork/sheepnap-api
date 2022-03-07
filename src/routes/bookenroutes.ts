@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { getConnection } from 'typeorm';
-import BookenRepository from '../businesslogic/bookenRepository';
+import BookenRepository from '../businesslogic/booken';
 import { Booken } from "../entity/Booken";
 import { Property } from '../entity/Property';
 

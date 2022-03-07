@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {getConnection} from 'typeorm';
-import RoomTypeRepository from '../businesslogic/roomTypeRepository';
+import RoomTypeRepository from '../businesslogic/roomType';
 import { Property } from '../entity/Property';
 import { RoomType } from '../entity/RoomType';
  

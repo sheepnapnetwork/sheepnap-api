@@ -4,7 +4,7 @@ import {getConnection, getRepository, SelectQueryBuilder} from 'typeorm';
 import {Property} from "../entity/Property";
 import {PropertyMetadata} from '../types/PropertyMetadataType';
 import MetadataValidator from '../businessentities/MetadataValidator';
-import PropertyRepository from '../businesslogic/propertyrepository';
+import PropertyRepository from '../businesslogic/property';
 
 class PropertyRoute {
     router : Router;
