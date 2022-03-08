@@ -1,8 +1,11 @@
 import { Property } from "../entity/Property";
 import { PropertyMetadata } from "../types/PropertyMetadataType";
-import {getConnection, getRepository, SelectQueryBuilder} from 'typeorm';
+import {EntityManager, getConnection, getRepository, SelectQueryBuilder, ViewEntity} from 'typeorm';
 import { PropertyImage } from "../entity/PropertyImage";
 import { Amenity } from "../entity/Amenities";
+import { View } from "typeorm/schema-builder/view/View";
+import { ViewPropertiesByMonth } from "../entity/viewPropertiesByMonth";
+import {getManager} from "typeorm";
 
 export default class PropertyRepository
 {
@@ -48,7 +51,7 @@ export default class PropertyRepository
         });
     }
 
-    async GetPropertiesForHomePageRepository() 
+    async GetPropertiesForHomePage() 
     {
         const properties = await getConnection()
         .getRepository(Property)
@@ -61,7 +64,7 @@ export default class PropertyRepository
         return properties;
     }
 
-    async GetPropertiesByApprovedDeniedRepository(ownerDenied: string)
+    async GetPropertiesByApprovedDenied(ownerDenied: string)
     {
 
         const properties = await getConnection()
@@ -77,7 +80,7 @@ export default class PropertyRepository
         return properties;
     }
 
-    async GetPropertyDetailRepository(address : string)
+    async GetPropertyDetail(address : string)
     {
         let property = await getConnection()
             .getRepository(Property)
@@ -86,7 +89,7 @@ export default class PropertyRepository
         return property;
     }
 
-    async GetPropertiesByAddressRepository(address : string)
+    async GetPropertiesByAddress(address : string)
     {
         let property = await getConnection()
             .getRepository(Property)
@@ -95,11 +98,21 @@ export default class PropertyRepository
         return property;
     }
 
-    async GetPropertiesByOwnerRepository(owner : string)
+    async GetPropertiesByOwner(owner : string)
     {
         let properties: Property[] = await getConnection()
             .getRepository(Property)
             .find({owner: owner});
+        
+        return properties;
+    }
+
+    async GetPropertiesByMonth()
+    {
+        const entityManager = getManager();
+        const properties = await entityManager.find(ViewPropertiesByMonth)
+
+        //console.log("view nestor: ", properties)
         
         return properties;
     }

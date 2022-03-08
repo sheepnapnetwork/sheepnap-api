@@ -4,7 +4,7 @@ import {getConnection, getRepository, SelectQueryBuilder} from 'typeorm';
 import {Property} from "../entity/Property";
 import {PropertyMetadata} from '../types/PropertyMetadataType';
 import MetadataValidator from '../businessentities/MetadataValidator';
-import PropertyRepository from '../businesslogic/property';
+import PropertyRepository from '../businesslogic/propertyRepository';
 
 class PropertyRoute {
     router : Router;
@@ -42,7 +42,7 @@ class PropertyRoute {
     async GetPropertiesForHomePage(req : Request, res : Response) 
     {
         let propertyRepository = new PropertyRepository();
-        let properties = await propertyRepository.GetPropertiesForHomePageRepository()
+        let properties = await propertyRepository.GetPropertiesForHomePage()
         
         res.json(properties);
     }
@@ -52,7 +52,7 @@ class PropertyRoute {
         let owner: string = req.params.owner.toLowerCase();
 
         let propertyRepository = new PropertyRepository();
-        let propertiesDenied = await propertyRepository.GetPropertiesByApprovedDeniedRepository(owner)
+        let propertiesDenied = await propertyRepository.GetPropertiesByApprovedDenied(owner)
         
         res.json(propertiesDenied);
     }
@@ -65,7 +65,7 @@ class PropertyRoute {
         }
 
         let propertyRepository = new PropertyRepository();
-        let propertyDetail = await propertyRepository.GetPropertyDetailRepository(address); 
+        let propertyDetail = await propertyRepository.GetPropertyDetail(address); 
 
         res.json(propertyDetail);
     }
@@ -74,7 +74,7 @@ class PropertyRoute {
         let address: string = req.params.address;
         
         let propertyRepository = new PropertyRepository();
-        let propertyAddress = await propertyRepository.GetPropertiesByAddressRepository(address);
+        let propertyAddress = await propertyRepository.GetPropertiesByAddress(address);
 
         res.json(propertyAddress);
     }
@@ -83,9 +83,17 @@ class PropertyRoute {
         let owner: string = req.params.owner.toLowerCase();
 
         let propertyRepository = new PropertyRepository();
-        let propertyOwner = await propertyRepository.GetPropertiesByOwnerRepository(owner);
+        let propertyOwner = await propertyRepository.GetPropertiesByOwner(owner);
             
         res.json(propertyOwner);
+    }
+
+    async GetPropertiesByMonth(req : Request, res : Response) 
+    {
+        let propertyRepository = new PropertyRepository();
+        let properties = await propertyRepository.GetPropertiesByMonth();
+        
+        res.json(properties);
     }
 
     async validateMetadataEndpoint(req : Request, res : Response) {
@@ -111,6 +119,7 @@ class PropertyRoute {
         this.router.get('/propertiesapproveddenied/:owner', this.GetPropertiesByApprovedDenied);
         this.router.get('/property/:address', this.GetPropertiesByAddress);
         this.router.get('/properties/owner/:owner', this.GetPropertiesByOwner);
+        this.router.get('/propertiesbymonth', this.GetPropertiesByMonth);
         this.router.post('/addproperty', this.AddProperty);
         this.router.post('/search', this.SearchProperties);
     }

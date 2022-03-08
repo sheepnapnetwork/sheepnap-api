@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { getConnection } from 'typeorm';
-import BookenRepository from '../businesslogic/booken';
+import BookenRepository from '../businesslogic/bookenRepository';
 import { Booken } from "../entity/Booken";
 import { Property } from '../entity/Property';
 
@@ -26,7 +26,7 @@ class BookenRoute
         } = req.body;
 
        let bookenRepository = new BookenRepository();
-       await bookenRepository.addBookenRepository(address, dateFrom, dateTo, 
+       await bookenRepository.addBooken(address, dateFrom, dateTo, 
                         minAdults, maxAdults, propertyaddress);
 
         res.json({ status : 'success' , data : "" });
@@ -35,7 +35,7 @@ class BookenRoute
     async getBooken(req : Request, res : Response)
     {
         let bookenRepository = new BookenRepository();
-        let bookensToGet =  await bookenRepository.getBookensRepository();
+        let bookensToGet =  await bookenRepository.getBookens();
 
         res.json(bookensToGet);
     }

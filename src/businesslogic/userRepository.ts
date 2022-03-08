@@ -3,7 +3,7 @@ import {User} from '../entity/User';
 
 export default class UserRepository 
 {
-    async addUserRepository(address : string, firsttime: boolean)
+    async addUser(address : string, firsttime: boolean)
     {
         let date : Date = new Date()
         let user = new User();
@@ -16,13 +16,13 @@ export default class UserRepository
         console.info("User has been saved");
     }
 
-    async getUsersRepository()
+    async getUsers()
     {
         let users = await getConnection().getRepository(User).find();
         return users;
     }
 
-    async getUserByIdRepository(id : number)
+    async getUserById(id : number)
     {
         let user : User = await getConnection().getRepository(User).findOne({where:{id:id}});
         return user;

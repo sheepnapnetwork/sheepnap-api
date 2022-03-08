@@ -3,7 +3,7 @@ import {Booken} from '../entity/Booken';
 
 export default class BookenRepository
 {
-    async addBookenRepository( address: string, dateFrom: Date, dateTo: Date, 
+    async addBooken( address: string, dateFrom: Date, dateTo: Date, 
         minAdults: number, maxAdults: number , propertyaddress: string)
     {
         let date : Date = new Date();
@@ -20,7 +20,7 @@ export default class BookenRepository
         console.info("Booken has been saved");
     }
 
-    async getBookensRepository()
+    async getBookens()
     {
         let bookens = await getConnection().getRepository(Booken).find();
         return bookens;

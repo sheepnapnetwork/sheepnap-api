@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { Geometry } from 'geojson';
 import { getConnection, getMongoRepository } from 'typeorm';
-import LocationRepository from '../businesslogic/location';
+import LocationRepository from '../businesslogic/locationRepository';
 import { Location } from '../entity/Location';
 
 class LocationRoute
@@ -18,7 +18,7 @@ class LocationRoute
     {
         const {address , dataPoint} = req.body;
         let locationRepository = new LocationRepository();
-        await locationRepository.addLocatioRepository(address, dataPoint);
+        await locationRepository.addLocatio(address, dataPoint);
         
         res.json({status : res.status, data : ""});
     }
@@ -26,7 +26,7 @@ class LocationRoute
     async getLocations(req : Request, res : Response)
     {
         let locationRepository = new LocationRepository();
-        let locations = await locationRepository.getLocationsRepository();
+        let locations = await locationRepository.getLocations();
         
         res.json(locations);
     }

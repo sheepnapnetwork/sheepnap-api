@@ -30,6 +30,8 @@ import userroutes from './routes/userroutes';
 import { User } from './entity/User';
 import { Location } from './entity/Location';
 import {  Amenity } from './entity/Amenities';
+import { ViewPropertiesByMonth } from './entity/viewPropertiesByMonth';
+
 
 
 class Server
@@ -63,7 +65,8 @@ class Server
                 RoomType,
                 User,
                 Location,
-                Amenity
+                Amenity,
+                ViewPropertiesByMonth
                 
             ],
             synchronize: true,

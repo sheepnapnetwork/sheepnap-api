@@ -3,7 +3,7 @@ import { Badge } from '../entity/Badge';
 
 export default class BadgeRepository
 {
-    async addBadgeRepository(code: number, name : string, description : string,
+    async addBadge(code: number, name : string, description : string,
         owner: string, quantity: number, src: string)
     {
         let badge = new Badge();
@@ -18,7 +18,7 @@ export default class BadgeRepository
         console.info("Badge has been saved");
     }
 
-    async getBadgesRepository()
+    async getBadges()
     {
         let badges = await getConnection()
             .getRepository(Badge)
@@ -27,7 +27,7 @@ export default class BadgeRepository
         return badges;
     }
 
-    async deleteBadgeRepository(code : number)
+    async deleteBadge(code : number)
     {
         await getConnection()
             .getRepository(Badge)

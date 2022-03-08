@@ -5,7 +5,7 @@ import {RoomType} from '../entity/RoomType';
 export default class RoomTypeRepository
 {
 
-    async addRoomTypeRepository(code : number, description : string, property : string){
+    async addRoomType(code : number, description : string, property : string){
 
         let roomType = new RoomType()
         roomType.code = code;
@@ -23,7 +23,7 @@ export default class RoomTypeRepository
         return properties
     }
 
-    async getRoomsTypesRepository()
+    async getRoomsTypes()
     {
         let roomType = await getConnection()
             .getRepository(RoomType)
@@ -32,7 +32,7 @@ export default class RoomTypeRepository
         return roomType;
     }
 
-    async getRoomTypeByAddressRepository(address : string)
+    async getRoomTypeByAddress(address : string)
     {
         let roomType : RoomType []  = await getConnection()
             .getRepository(RoomType)

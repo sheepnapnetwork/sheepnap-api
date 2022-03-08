@@ -4,7 +4,7 @@ import {Location} from '../entity/Location';
 
 export default class LocationRepository
 {
-    async addLocatioRepository(address : number, dataPoint : string)
+    async addLocatio(address : number, dataPoint : string)
     {
         let geography = new Location()
         geography.address = address;
@@ -14,7 +14,7 @@ export default class LocationRepository
         console.info("Location has been saved");
     }
 
-    async getLocationsRepository(){
+    async getLocations(){
         let locations = await getConnection().getRepository(Location).find()
         return locations;
     }

@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import "reflect-metadata";
 import { getConnection } from 'typeorm';
-import BadgeRepository from '../businesslogic/badge';
+import BadgeRepository from '../businesslogic/badgeRepository';
 import {Badge} from '../entity/Badge';
 
 
@@ -20,7 +20,7 @@ class BadgeRoute
         const { code, name,description, owner, quantity, src } = req.body;
 
         let badgeRepository = new BadgeRepository();
-        await badgeRepository.addBadgeRepository(code, name, description, owner, quantity, src);
+        await badgeRepository.addBadge(code, name, description, owner, quantity, src);
 
         res.json({ status : 'success' , data : "" });
     }
@@ -28,7 +28,7 @@ class BadgeRoute
     async getBadges(req: Request, res : Response)
     {
         let badgeRepository = new BadgeRepository();
-        let badgesToGet = await badgeRepository.getBadgesRepository();
+        let badgesToGet = await badgeRepository.getBadges();
 
         res.json(badgesToGet);
     }
@@ -38,7 +38,7 @@ class BadgeRoute
         const codeTodelete: number = parseInt(req.params.code); 
 
         let badgeRepository = new BadgeRepository();
-        await badgeRepository.deleteBadgeRepository(codeTodelete);
+        await badgeRepository.deleteBadge(codeTodelete);
         
         res.json({ status : 'success' , data : "" });
     }

@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {getConnection} from 'typeorm';
-import RoomTypeRepository from '../businesslogic/roomType';
+import RoomTypeRepository from '../businesslogic/roomTypeRepository';
 import { Property } from '../entity/Property';
 import { RoomType } from '../entity/RoomType';
  
@@ -17,7 +17,7 @@ class RoomTypeRoute{
         const {code, description, property} = req.body;
 
         let roomTypePropertyRepository = new RoomTypeRepository();
-        await roomTypePropertyRepository.addRoomTypeRepository(code, description, property)
+        await roomTypePropertyRepository.addRoomType(code, description, property)
 
         res.json({ status : 'success' , data : "" });
     }
@@ -25,7 +25,7 @@ class RoomTypeRoute{
     async getRoomsTypes(req : Request, res : Response){
         
         let roomTypePropertyRepository = new RoomTypeRepository();
-        let roomsTypesToGet = await roomTypePropertyRepository.getRoomsTypesRepository();
+        let roomsTypesToGet = await roomTypePropertyRepository.getRoomsTypes();
 
         res.json(roomsTypesToGet);
     }
@@ -34,7 +34,7 @@ class RoomTypeRoute{
         let address: string= req.params.property
 
         let roomTypePropertyRepository = new RoomTypeRepository();
-        let roomsTypesByAddress = await roomTypePropertyRepository.getRoomTypeByAddressRepository(address);
+        let roomsTypesByAddress = await roomTypePropertyRepository.getRoomTypeByAddress(address);
 
         res.json(roomsTypesByAddress);
     }

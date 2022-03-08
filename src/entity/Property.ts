@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, OneToOne, JoinColumn, ViewEntity } from "typeorm";
 import { Amenity } from "./Amenities";
 import { ApprovalRequest } from "./ApprovalRequest";
 import { PropertyImage } from "./PropertyImage";
@@ -58,4 +58,5 @@ export class Property
     @OneToOne(() => ApprovalRequest, aprovalRequest => aprovalRequest.property)
     @JoinColumn()
     AprovalRequest: ApprovalRequest;
+
 }

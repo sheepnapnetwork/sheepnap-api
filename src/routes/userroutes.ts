@@ -1,6 +1,6 @@
 import {Request, Response, Router} from 'express';
 import {getConnection} from 'typeorm';
-import UserRepository from '../businesslogic/user';
+import UserRepository from '../businesslogic/userRepository';
 import { User } from '../entity/User';
 
 
@@ -17,7 +17,7 @@ class UserRoute{
         const {address, firsttime} = req.body;
 
         let userRepository = new UserRepository();
-        await userRepository.addUserRepository(address, firsttime);
+        await userRepository.addUser(address, firsttime);
 
         res.json({ status : 'success' , data : "" });
     }
@@ -25,7 +25,7 @@ class UserRoute{
     async getUsers(req : Request, res: Response)
     {
         let userRepository = new UserRepository();
-        let userToGet = await userRepository.getUsersRepository();
+        let userToGet = await userRepository.getUsers();
 
         res.json(userToGet);
     }
@@ -34,11 +34,10 @@ class UserRoute{
         const id : number = parseInt(req.params.id);
         
         let userRepository = new UserRepository();
-        let userById = await userRepository.getUserByIdRepository(id);
+        let userById = await userRepository.getUserById(id);
 
         res.json(userById);
     }
-
 
     routes(){
         this.router.post('/adduser', this.addUser);
